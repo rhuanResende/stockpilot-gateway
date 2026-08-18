@@ -1,0 +1,28 @@
+server:
+  port: ${PORT:8080}
+
+spring:
+  application:
+    name: stockpilot-gateway
+    version: "@project.version@"
+
+  cloud:
+    gateway:
+      mvc:
+        routes:
+
+          - id: auth-service
+            uri: lb://stockpilot-auth
+            predicates:
+              - Path=/api/v1/auth/**
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_ADDRESS:http://localhost:8761/eureka/}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,gateway
